@@ -10,31 +10,37 @@
     tools:context="com.ws.consulta.MainActivity">
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Consultar"
-        android:id="@+id/btnConsultar"
-        android:onClick="getInfoFromWS"
-        android:layout_alignParentStart="true" />
-
-    <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Consultar país"
         android:onClick="getCountries"
+        android:textSize="8sp"
         android:id="@+id/btnCountry"
-        android:layout_below="@+id/txtCode"
-        android:layout_alignParentStart="true" />
+        android:layout_alignTop="@+id/txtCode"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/txtCode" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtCode"
-        android:hint="Codigo de país"
-        android:layout_below="@+id/btnConsultar"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="44dp"
+        android:hint="Código de país (ej. MX, PA, US)"
+        android:layout_below="@+id/txtNameCountry"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="96dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="--"
+        android:id="@+id/txtNameCountry"
+        android:textSize="34sp"
+        android:textAlignment="center"
+        android:background="@android:color/darker_gray"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="26dp"
         android:layout_alignParentStart="true" />
 
 </RelativeLayout>

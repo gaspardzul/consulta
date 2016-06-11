@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 /**
  * Este es un ejemplo en el cual podemos ver de que manera podemos usar funciones genericas
@@ -19,23 +21,15 @@ import org.json.JSONObject;
  */
 public class MainActivity extends AppCompatActivity implements ListenerRequest {
     EditText txtCode;
+    TextView txtNameCountry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Consulta de Paises");
         setContentView(R.layout.activity_main);
         txtCode = (EditText) findViewById(R.id.txtCode);
-    }
-
-    /**
-     * En esta funcion nosotros obtenemos la información personal de un personaje
-     * en la liga http://api.androidhive.info/volley/person_object.json
-     * @param v
-     */
-    public void getInfoFromWS(View v){
-        WSRequest ws = new WSRequest(this,this);
-        JSONObject json =new  JSONObject();
-        ws.RequestGET("http://api.androidhive.info/volley/person_object.json");
+        txtNameCountry = (TextView) findViewById(R.id.txtNameCountry);
     }
 
     /**
@@ -46,7 +40,12 @@ public class MainActivity extends AppCompatActivity implements ListenerRequest {
     public void getCountries(View v){
         WSRequest ws = new WSRequest(this,this);
         String code = txtCode.getText().toString().trim();
-        ws.RequestGET("http://services.groupkt.com/country/get/iso2code/"+code);
+        if(!code.isEmpty()){
+            ws.RequestGET("http://services.groupkt.com/country/get/iso2code/"+code);
+        }else {
+            txtCode.setError("Se requiere un valor!");
+        }
+
     }
 
 
@@ -60,20 +59,13 @@ public class MainActivity extends AppCompatActivity implements ListenerRequest {
             //en esta línea parseamos el String en formato json  un Objeto JSONOBJECT de android
             // para manipular mas facilmente la respuesta
             JSONObject json = new JSONObject(response);
-
-            // la función connectionFinish
-            if(json.has("name")){
-                Toast.makeText(this,json.getString("name") +" - "+ json.getString("email"),Toast.LENGTH_LONG).show();
-            }else{
-                //
                String nameCountry= json.getJSONObject("RestResponse").getJSONObject("result").getString("name");
-               Toast.makeText(this,nameCountry,Toast.LENGTH_LONG).show();
-                txtCode.setText(nameCountry);
-            }
-
+                txtNameCountry.setText(nameCountry);
+                txtCode.setText("");
         } catch (JSONException e) {
             e.printStackTrace();
             Toast.makeText(this,"La consulta no devolvió resultados",Toast.LENGTH_LONG).show();
+            txtNameCountry.setText("--");
 
         }
 
@@ -84,6 +76,5 @@ public class MainActivity extends AppCompatActivity implements ListenerRequest {
      **/
     @Override
     public void onError(String response) {
-        Log.d("error",response);
     }
 }
